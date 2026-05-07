@@ -120,12 +120,124 @@ Availability Zone : Data Center or combination of multipe DCs..
 --> Every region contains atleast 2 AZs.. 
 
 
+https://avizacademy.com/payments.html
+
+=======================
+
+D: 07/05
+
+To achieve least privilages mechanism, We need to depends on "IAM User". 
+
+What we need to when we create an AWS account.?
+
+Step 1 : Enable MFA for root user
+Step 2 : Setup Account alias
+Step 3 : Setup Strong password polocies on your aws account
+Step 4 : Create an IAM user, if required, keep admin permisisons and handover the root credrntials to PM (Project Manager) / PO (Product Owner).
+
+Step 4 guide : Create an IAM user with "Administrator ACcess", keep it with you to manage this AWS account. 
+--> In future if you get any req, to create user, create server, storage.. You can do it, as you have Administrator access.
+
+----
+
+Step 2
+
+You remember this : 828477980115 or avizway8
+
+https://avizway8.signin.aws.amazon.com/console
+https://828477980115.signin.aws.amazon.com/console
 
 
+Sandbox / Training
+Dev
+QA
+SIT
+UAT
+PRD
+Central Logging
+Central Networking
+Management Account
 
+---
+
+step 3 : Enforce a strong password polocy for all users we are going to create in this aws account.
+--> IAM --> Account Settings --> Password policy
+
+Set to "Custom"
+
+10 characters
+Require at least one uppercase letter from the Latin alphabet (A-Z)
+Require at least one lowercase letter from the Latin alphabet (a-z)
+Require at least one number
+Require at least one non-alphanumeric character
+Password expires in 90 day(s)
+Allow users to change their own password
+Prevent password reuse from the past 3 changes
+
+---
+
+Step 4 : Created an IAM user with Admin access, so we can handover root cred. 
+We can use this user cred to perform any activity on this account (except account management)
+
+
+============
+
+User Creation in IAM : 
+
+**
+AWS Management Console Access : We can use "username", "password" and "sign-in url" to login to account using Browser.
+
+
+Programatic Access : We can generate "AWS Access key" and "Secret Access key" and using CMD/CLI/IDE we can access aws environment. (CLI/Prgramatic) : LATER
+
+
+An IAM user with Administartor Access is equal to root user (without Account management permissions)
+
+---
+
+Storage Admin Team : This team needs permisisons on only S3 Service.  
+
+Username : s3-admin
+Password : 
+Sign-in URL : https://avizway8.signin.aws.amazon.com/console
+Password Instuctions : You should follow below pwd instruction
+Require at least one uppercase letter from the Latin alphabet (A-Z)
+Require at least one lowercase letter from the Latin alphabet (a-z)
+Require at least one number
+Require at least one non-alphanumeric character
+
+
+S3 : Simple Storage Service : AWS Version of Google Drive / DropBox / iCloud.. 
+EC2 : Elastic Compute Cloud : We can launch servers, run based on pay-as-you-go.
+
+Pay-as-you-go : Pay for the resources you actually use. (1 hr - pay for 1 hr... 30 min - pay for 30 min)
+
+---
+
+Implicit : user can access only services he is allowed to use using "IAM Policy".. 
+
+======
+
+How to track an IAM user activity.?
+
+We can use "cloudtrail" and we can identify user activities, using "username" / "event name".. 
+
+Cloudtrail is enabled on all aws accounts, by default. It can store last 90 days activities. 
+--> We cannot modify/alter/delete any log we have in cloudtrail.
+
+======
+
+Generate IAM users credentails report.. 
+
+The credentials report lists all your IAM users in this account and the status of their various credentials. After a report is created, it is stored for up to four hours.
+
+======
 
 
 https://avizacademy.com/payments.html
+
+
+
 
 
 
