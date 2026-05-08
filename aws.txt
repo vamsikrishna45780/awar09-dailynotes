@@ -237,6 +237,72 @@ The credentials report lists all your IAM users in this account and the status o
 https://avizacademy.com/payments.html
 
 
+========
+
+
+D: 08/05/2026
+
+
+IAM Policy : A Document that contains set of permisisons on AWS environment, Written in JSON format. 
+
+AWS Managed : AWS Provides this based on the service and service use cases. 
+
+AWS Managed - Job Function : AWS Provides this based on current job roles, and they required permisisons to perform that specific job. i.e; dba, readonly, administrator, SecurityAudit, SupportUser.. 
+
+Customer Managed Policy : For custom requirements, based on customer use cases.. We can depend on Customer managed policy.
+
+
+Implicit allow : You create a user and add polocies to the user, and he can access those services. 
+
+---
+
+Requirement 1 : I need an IAM user, who has full access on AWS environment, but he should not able to perform anything on S3 Service.
+
+
+Service :  S3								: s3
+Effect : Allow / Deny						: Deny
+Actions : upload/download/update/delete		: s3:*
+Resources : bucket1 / bucket2 				: *
+
+---
+
+Requirement 2 : I need to provide S3 Full access for an IAM user, But, The user should not able to upload anything to s3 platform on any resource. 
+
+---
+
+Requirement 3 : I want to allow all operation on s3 platform for an IAM user, But all these operations should be allowed from corporate network only.
+
+--> Limit user to specific network
+--> limit user to specific region
+
+---
+
+Inline Policy : It embedded directly into one particular user, group or role. 
+
+--> We can use this to add more permissions when user hits, max allocated polocy issue.
+--> Its hard to track inline polocies. 
+--> if you delete the entity (user / group / role), Inline policy will delete.
+
+---
+
+Permisisons Boundary : 
+--> Not a commonly used feature. 
+--> We have an IAM user and he has s3 full access and want to limit him to s3 full access only. Even accidentally, so other permisisons added, it should not work.
+
+---
+
+
+
+
+
+
+https://avizacademy.com/payments.html
+
+
+
+
+
+
 
 
 
