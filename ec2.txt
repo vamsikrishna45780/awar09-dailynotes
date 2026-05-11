@@ -1,0 +1,110 @@
+
+
+EC2 : Elastic Compute Cloud : We can launch servers, We can deploy applications into the servers, and we can deliver to the world / customers (B2B - Business to Business).. 
+
+95 % Applications -  B2B model
+5% Open to the world - google, Meta, openai, anthropic, nexflix, prime... 
+
+
+laptop : cpu, motherboard, memory, storage, GPU, Graphic Card.. : CLient class hardware.. Client class OS : 
+windows 10, windows 7, ubuntu desktop, macos..  i3, i5, i7 processors, amd processor..
+
+Server : cpu, motherboard, memory, storage, GPU, Graphic Card..  : So powerfull, we can run 24x7 and 365 days..
+RHEL, Ubuntu server, Amazon Linux, Windows server 2022, 2026.. intel xeon, graviton, amd... 
+ 
+EC2 is to run Servers.. Not client OS.. 
+
+Pay-as-you-go Model : 
+
+Server for 1 hr.. run it for 1 hr.. Upgrade it.. downgrade.. Delete : Pay for your actual usage.. 
+DB / Network / Monitoring / Encry / Storage.. 
+
+---
+
+Server = Instance = Azure VM = Virtual Machiene = GCP Compute 
+
+---
+
+1. On-Demand Instances : Default pricing model in AWS.
+
+Pay only what you use.
+No long-term commitment
+Changed per Second basis (Min 60 Sec)
+Highest flexibility and Highest Cost
+
+Best for : Testing, short duration runs, Temp environment (dev/qa/uat)
+
+
+2. Reserved Instances (RI)
+
+Commitment required for 1 Yr / 3 yrs
+We get upto ~70% discount compared to On-Demand.
+
+	2.1 Standard RI : Maximum Discount, Less Flexibility to change configuration (Fixed Instance family/type)
+	2.2 Convertable RI : Lower Discount, More flexibility to change Instance Family / OS / Tenancy.
+
+Payment Options for RI : 
+	All Upfront : Pay everything at the time of purchase, No monthly cost.
+	Partial Upfront : YOu pay 30-60% now, AWS Decrease the hourly cost of the instance.. Monthly cost occurs, 	but with redused cost..
+	No Upfront : Pay everything monthly basic.. Cost similar to On-Demand..
+
+
+3. Saving Plans : THis is modern replacement/improvement over RIs. AWS intrododused this to reduse the RIs complexity. you pay it whether you use it or not
+
+We are commiting with AWS on Hourly price. You are giving commitment to aws to spend 10$/Hr, so AWS offers good amount of discount.
+
+	3.1 Compute Saving Plan : For multiple services : ec2, lambda, fargate.. We can change Instance fanily / size / Region / OS / AZs.. 
+	
+	3.2 EC2 instance savings plan : Less flexible but good discount.. Applicable to only EC2 service.. We can change Instance family in a specific region..
+
+3.3 SageMaker Saving Plan : AI related workload 
+3.4 Database Saving Plan : Database realted worklaod
+
+
+4. Spot Instances : AWS Offers its unused capacity at huge discount. BUT ..... AWS Can terminate/Delete the instance anytime with Just 2 min warning. 
+Batch Job, Rendering, Temp Jobs, Easily recoverable jobs, Interruptable jobs..
+
+--> If Price Not increase, YOU Terminated our INstance, We need to pay full amount..
+--> If price increased, AWS terminated our instance, we get charged for FUll hours only, We dont get charged for Partial hours..
+
+5 hrs 50 Minutes.. 
+
+YOU Terminate : 5 hrs 50 min
+AWS Terminate : 5 hrs only
+
+Not good for Production workload / DBs / Stateful systems.. 
+
+--> We have to bid against aws pricing. if our bid price is more than or equal, AWS provides the server.
+
+===================
+
+Step 1 : Add Tags (Name, OS, Cost Center, Project, Client)
+
+Step 2 : Choose AMI (Amazon Machine Image) - Select Required OS (Amazon Linux)
+
+Step 3 : Choose Instance Type (CPU, Memory) (t3.micro)
+
+Step 4 : Choose keyPair (helps to authenticate the server) (No keypair)
+
+Step 5 : Choose network Settings (VPC - Virtual Private Cloud) (SSH --> Anywhere)
+
+Step 6 : Choose the required storage size. (Linux : 8 Gb.. Windows: 30 gb)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
