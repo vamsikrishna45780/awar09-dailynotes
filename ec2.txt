@@ -57,7 +57,7 @@ We are commiting with AWS on Hourly price. You are giving commitment to aws to s
 	
 	3.2 EC2 instance savings plan : Less flexible but good discount.. Applicable to only EC2 service.. We can change Instance family in a specific region..
 
-3.3 SageMaker Saving Plan : AI related workload 
+3.3 SageMaker Saving Plan : AI/ML related workload 
 3.4 Database Saving Plan : Database realted worklaod
 
 
@@ -78,17 +78,86 @@ Not good for Production workload / DBs / Stateful systems..
 
 ===================
 
+
 Step 1 : Add Tags (Name, OS, Cost Center, Project, Client)
 
 Step 2 : Choose AMI (Amazon Machine Image) - Select Required OS (Amazon Linux)
 
+Choose required OS.. 
+
 Step 3 : Choose Instance Type (CPU, Memory) (t3.micro)
+
+t --> Testing/Tiny
+M --> Mixed / balanced
+C --> CPU heavy
+R --> RAM heavy
+P/G --> GPU
+I/D/H --> Intensive Storage
+
+t2 --> Older
+t3 --> newer
+t4g --> ARM/Graviton based (Cost efficient)
+
+small website --> t3.micro
+application server --> m5.large
+CPU intensive app --> c6i.large
+AI Model training --> p5 / trn1
+
+Remember this config:
+C5.xlarge - 4 cpu, 8 gb memory
+m5.4xlarge - 16 cpu, 64 gb memory
+
 
 Step 4 : Choose keyPair (helps to authenticate the server) (No keypair)
 
-Step 5 : Choose network Settings (VPC - Virtual Private Cloud) (SSH --> Anywhere)
+How to connect to it..? SSH.. Putty / Mobaxterm / terminal / Command prompt / github terminal / superputty
+
+Username : amazon linux - ec2-user / ubuntu - ubuntu / redhat - redhat
+
+Linux : Works with Public Key and PRivate key authentication method. 
+AWS Copy Public key inside ec2 instance.. AWS Provides Private key to us.. Now, to connect to instance, you need to browse your private key, against public key, If matches, then allow us to connect.. 
+
+
+Step 5 : Choose Network Settings (VPC - Virtual Private Cloud) (SSH --> Anywhere)
+
+Firewall (security groups): A security group is a set of firewall rules that control the traffic for your instance. Add rules to allow specific traffic to reach your instance.
+
+SSH : 22 : --> My IP
 
 Step 6 : Choose the required storage size. (Linux : 8 Gb.. Windows: 30 gb)
+
+========
+
+1. Terminal / Comamnd Prompt : 
+
+windows users : open comamnd prompt / Powershell : type "ssh" 
+ssh is not a recognised command / not an operable program.. Enable "openssh" in your programs. 
+
+Go to System > Optional features 
+Look through the list for "OpenSSH Client." Select View features (Windows 11) or Add a feature (Windows 10).Search for "OpenSSH Client," select it, and click Install. CLose and re-open the terminal.. type "ssh"
+
+Navigate to folder, wehere you have the keypair.. In Address bar, type "cmd" and click on enter.. 
+
+ssh -i <keypair> <username>@<instance-public-ip> 
+
+ssh -i "awar09-kp.pem" ec2-user@13.206.208.205
+
+---
+
+unprotected file error in windows os:  WARNING: UNPROTECTED PRIVATE KEY FILE! (or) Permisisons are too open.
+
+icacls <keypair.pem> /inheritance:r
+icacls <keypair.pem> /grant:r "$($env:USERNAME):(R)"
+
+icacls <keypair.pem> /remove "Users"
+icacls <keypair.pem> /remove "Everyone"
+icacls <keypair.pem> /remove "Authenticated Users"
+
+---
+
+https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+
+
 
 
 
