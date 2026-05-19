@@ -440,7 +440,190 @@ echo "Todays is $(date)"
 
 =========================
 
+D: 19/05/2026
 
+touch test.txt
+mkdir test
+
+ll					--> long list
+ls -l
+
+d	rwx		r-x		r-x	. 		2 ec2-user ec2-user 6 May 19 14:10 test
+-	rw-		r--		r--	. 		1 ec2-user ec2-user 0 May 19 14:10 test.txt
+
+d 		: Directory / Folder
+- 		: File 
+
+owner	: first 3
+group	: second 3
+others	: theird 3
+
+owner	: u
+group	: g
+others	: o
+
+read 	: r : View file content and list directories
+write	: w : Edit file content and create/delete files inside the directory
+execute	: x : Run as program and enter the directory
+
+
+Octal/Number method for Permisisons : 
+
+Read 	: r : 4
+write	: w : 2
+execute : x : 1
+None	: - : 0
+
+
+7 : rwx : 4+2+1 = 7 : Full Access
+6 : rw-	: 4+2+0 = 6 : Read and Write
+5 : r-x : 4+0+1 = 5	: Read and Execute
+4 : r-- : 4+0+0 = 4 : Read Only
+0 : --- : 0+0+0 = 0 : No Access
+
+
+chmod 644		--> u=r&w , g=r , o=r
+chmod 777		--> u=rwx , g=rwx , o=rwx
+
+----
+
+stat <file/directory>		: complete user, owner and permissions info		
+
+---
+
+Scenario 1 : Only owner should perform anything on a directory. No other should have any permissions.
+
+cd ~
+mkdir private
+chmod 700 private/
+
+---
+
+stat private/					: detailed acl info
+
+getfacl teamproject/			: short acl info
+
+groups <username>				: Lists the user groups memberships
+
+----
+
+Scenario 2 : Team Collaboration Directory
+
+cd /opt
+
+sudo mkdir teamproject
+sudo groupadd devteam
+sudo useradd avinash
+sudo useradd anudeep
+sudo usermod -aG devteam avinash
+sudo usermod -aG devteam anudeep
+sudo chgrp devteam teamproject/
+sudo chmod 775 teamproject/
+
+--> Owner and devteam can perform anything
+--> others can read only operations.
+
+----
+
+Scenario 3 : Sticky bit.. Everyone need all permisisons, but only the owner should be able to delete it.
+
+sudo mkdir shared
+sudo chmod 1777 shared/
+
+#Everyne can create file as we have 777 permisisons, we enabled sticky bit, so only file owner can delete the files.
+
+---
+
+AWS Keypairs, Only the user/owner should have read access on the file, no groups or others should have any permisisons on keypair. 
+
+chmod 400 <keypair.pem>
+
+---
+
+Networking Commands : 
+
+ip addr				: Shows all network interfaces and IPs
+
+ip -br addr			: Shorter version of above command
+
+hostname -I			: Shows instance private IP
+
+
+ping google.com
+ping <server-ip>	: internal (use private ip).. External (use public ip)
+
+ping -c 5 google.com
+
+--
+
+To ping an ec2 instance running inside aws env, you need to open 2 ports "icmp echo reply" and "icmp echo request"..
+
+---
+
+curl : We can use curl command to access website in linux os..
+
+curl https://google.com
+
+TO download any file over internet, we can use wget command
+
+wget https://www.google.com
+curl -O https://www.google.com
+
+curl https://checkip.amazonaws.com/
+curl ifconfig.me
+
+------
+
+To adjust/set hostname for an ec2 instance, we can "hostnamectl"
+
+sudo hostnamectl set-hostname mywebserver
+
+-----
+
+--> DNS configuration files/path.
+
+cat /etc/resolv.conf				--> Shows DNS server info
+cat /etc/hosts						--> localhost mappings
+
+-----
+
+How to check port status: 
+
+ss (Socket Statistics)
+
+ss
+
+ss -tulnp						--> Shows currently listening ports with praogram names
+sudo ss -tulnp					--> gets bit more info about the process/service
+
+sudo lsof -i :80				--> To identify the service listening on the given port
+sudo lsof -i :22
+
+-----
+
+telnet : very very handy tool to verify the connection status and service port status on any server..
+
+sudo dnf install telnet -y
+
+telnet <instance-public-ip> <port-no>
+
+telnet 13.233.110.177 22
+telnet 13.233.110.177 80
+
+
+Connection refused : service problem (No service is available to handle it / Service is in stopped state)
+connection timeout : Port not opened at SG level or NACL level
+
+
+windows os : you can enable "telnet client" --> priograms and option features --> telnet client and install, reboot..
+
+--
+
+Alternative to telnet.
+
+openssl s_client -connect <host>:<port>
+
+openssl s_client -connect google.com:443
 
 
 
