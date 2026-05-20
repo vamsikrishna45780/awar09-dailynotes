@@ -626,7 +626,148 @@ openssl s_client -connect <host>:<port>
 openssl s_client -connect google.com:443
 
 
+====================
 
+D: 20/05/2026
+
+
+find : helps to search the files and directories based on name, type, data and size.
+
+
+sudo find / -name test.txt		--> Search everywhere in linux for test.txt
+
+sudo find / -iname Test.txt		--> Case Insensitive Search everywhere in linux for test.txt
+
+sudo find . -name test.txt		--> Search in current location
+
+sudo find /var/log -name "*.log"	--> search for log format files in /var/log directory
+
+sudo find / -name "error*"
+
+
+file 		: -type f
+directory	: -type d
+
+
+sudo find / -type f -name "*.sh"	--> search specifically for files only
+
+sudo find / -type d -name "logs"	--> Search for dir only at / path
+
+sudo find / -type f -empty			--> search for empty file
+
+sudo find / -type d -empty			--> search for empty dire
+
+---
+
+sudo find / -type f -size +200M			--> search for 200 or more file size
+
+sudo find / -type f -size 200M			--> search for exactly 200Mb files
+
+sudo find / -type f -mtime -7			--> files modified in the last 7 days
+
+sudo find / -type f -atime -1			--> Finds accessed files in last 1 day
+
+sudo find /var/log -type f -mmin -1440 -delete	--> find and delete the files accessed in last 24 hrs
+
+---
+
+Alternative to find, we have locate command.. But it maintains a db, when we search it looks into the db.. we need to update the db periodically..
+
+sudo dnf install mlocate -y
+sudo updatedb
+
+locate test.txt
+
+================
+
+sed : stream editor : This command helps us to find and replace the text / delete the text.. without opening the file.
+
+
+
+cat <<EOF > fruits.txt
+apple
+banana
+mango
+banana shake
+grapes
+apple juice apple slices
+EOF
+
+
+sed 's/apple/cherry/' fruits.txt		--> replace apple's first occurance on each line with cherry (wont write to the file)
+
+sed 's/apple/cherry/g' fruits.txt		--> Replace all on each line (wont write to the file)
+
+sed -i 's/apple/cherry/g' fruits.txt	--> THis edit the actual file and replace apple with cherry
+
+sed '/mango/a watermelon' fruits.txt	--> Adds watermelon after mango line
+
+sed '/mango/i watermelon' fruits.txt	--> Adds watermelon before mango line
+
+=============
+
+tee : this tee command will do 2 things at once: shows the output on the screen and saved it to the file. 
+
+problem with "echo", We can't use echo comamnd with "sudo".
+
+echo "hello" | sudo tee /etc/test.txt
+
+ping google.com | tee ping.log
+
+===========
+
+SCP : Secure Copy : helps to transfer file between 2 instances / machienes.
+
+linux to linux file transfer : scp , rsync
+windows to linux file transfer : winscp, mobaxterm
+
+the copy operation works better with user's home directory.. 
+
+scp -i awar09-kp.pem <local-file> <user-name>@<instance-ip>:/home/ec2-user
+
+Copy a local file to ec2 instance: 
+scp -i awar09-kp.pem rds-test.pem ec2-user@13.201.62.17:/home/ec2-user/
+
+Get the file from ec2 insatnce to local path:
+scp -i awar09-kp.pem ec2-user@13.201.62.17:/home/ec2-user/ec2.txt ./
+
+COpy file from instance to instance
+
+scp username@ip-addr:/path <dest/localpath>
+
+====================
+
+cron jobs : THis jobs runs automatically based on time interval / event we specify.
+
+sudo dnf install cronie -y
+
+sudo systemctl enable crond
+sudo systemctl start crond
+sudo systemctl status crond
+
+User specific crontab file stores : /var/spool/cron
+
+
+# Example of job definition:
+
+.---------------- minute (0 - 59)
+|  .------------- hour (0 - 23)
+|  |  .---------- day of month (1 - 31)
+|  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+|  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+|  |  |  |  |
+*  *  *  *  * user-name  command to be executed
+
+crontab -l			--> View current user cron jobs
+
+crontab -e			-> We can edit/ crate cronjobs.
+
+
+@reboot 
+@daily
+@hourly
+@weekly
+@monthly
 
 
 
