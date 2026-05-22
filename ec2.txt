@@ -158,11 +158,73 @@ icacls <keypair.pem> /remove "Authenticated Users"
 https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 
 
+
+
+========
+
+STOP : We dont loss any data, we cna start and resume our work
+TERMINATE : Instance not required, We can delete it. 
+
+---
+Can we protect our instances from Accidental STOP / TERMINATIONs. 
+
+Enable Stop protection
+Enable termination protection
+
+If you enable stop protection, user cant terminate the instance.
+
+Shutdown behaviour : What should happen to the instance at aws console, if we initialised "shutdown" operation at OS level. (STOP / TERMINATE) THis will have more priority comared to "STOP Protection".
+
+sudo init 0	--> stop
+
 =========
 
+D: 22/05/2026
+
+Snapshot : Backup copy of our ebs volume.
+
+Snapshots are point in time copies. AWS uses backend storage as S3. (But we cant see in our s3 buckets).. 
+
+Can we see what files/data we have inside the snapshot.? Ans: NO
+
+We have an existing unencrypted ebs volume, YOu are asked to encrypt it.!!
+Ans: Create a snapshot of unencrypted volume, Then create a volume from the snapshot, While creating volume, enable encryption. 
+Detach old unencrypted volume and attach it to ec2 instance.
+
+---------
+
+DLM : Datalifecycle manager : 
 
 
 
+RTO : Recovery Time Objective : 
+Meaning : Downtime limit
+The Question : How long can we afford to be offline
+Focus: Recovery speed
+Example: if our RTO is 2 hours, We must have systems should be backup - "up and running" with in 2 hours to avaoid critical business damage.
+
+RPO : Recovery Point Objective : 
+Meaning: Your data loss limit
+The Question: How much data loss we can afford.
+Focus : Backup frequency
+Example: If your RPO is set to 1 hour, you must have backup configured for every hour.
+
+
+
+
+Data Lifecycle Manager : Helps us to automate the creation, retention, copy and deletion of snapshots.
+
+How can we filter the resources: We can use "TAGS", We can filter using associated tags.. 
+
+--> We can apply filter at Instance level (or) Individual Volumes level.
+
+
+--> Install httpd and deliver the webpage
+--> Install tree and telnet package
+--> Add addl user and set password
+
+Once we do the above changes, we need to perform "sanity check" or "smoke test" to validate. 
+restart the instance an dverify all the functionalities.
 
 
 

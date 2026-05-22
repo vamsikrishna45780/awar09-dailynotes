@@ -903,24 +903,6 @@ sudo growpart /dev/nvme0n1 1
 
 ** In EBS, We dont have option to decrease the volume size. 
 
-========
-
-STOP : We dont loss any data, we cna start and resume our work
-TERMINATE : Instance not required, We can delete it. 
-
----
-Can we protect our instances from Accidental STOP / TERMINATIONs. 
-
-Enable Stop protection
-Enable termination protection
-
-If you enable stop protection, user cant terminate the instance.
-
-Shutdown behaviour : What should happen to the instance at aws console, if we initialised "shutdown" operation at OS level. (STOP / TERMINATE) THis will have more priority comared to "STOP Protection".
-
-sudo init 0	--> stop
-
-----
 
 
 
