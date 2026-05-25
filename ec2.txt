@@ -196,7 +196,6 @@ Detach old unencrypted volume and attach it to ec2 instance.
 DLM : Datalifecycle manager : 
 
 
-
 RTO : Recovery Time Objective : 
 Meaning : Downtime limit
 The Question : How long can we afford to be offline
@@ -209,15 +208,14 @@ The Question: How much data loss we can afford.
 Focus : Backup frequency
 Example: If your RPO is set to 1 hour, you must have backup configured for every hour.
 
-
-
-
 Data Lifecycle Manager : Helps us to automate the creation, retention, copy and deletion of snapshots.
 
 How can we filter the resources: We can use "TAGS", We can filter using associated tags.. 
 
 --> We can apply filter at Instance level (or) Individual Volumes level.
 
+
+Golden AMI / Customised AMI :
 
 --> Install httpd and deliver the webpage
 --> Install tree and telnet package
@@ -227,20 +225,109 @@ Once we do the above changes, we need to perform "sanity check" or "smoke test" 
 restart the instance an dverify all the functionalities.
 
 
+=============
+
+D: 25/05/2026
+
+EBS : pre-provisioning required. You need to choose desired volume size. 
+
+EFS : No pre-provisioning required. We can have unlimited storage.
+We can mount it to multiple instances (100s to 1000s of instance)
+EFS works on 2049 port number. Protocol : NFS (Network File System v 4)
+
+Opening 2049 port at SG Level.. But to where i need to open.
+
+1. Open for EveryOne 				: 0.0.0.0/0		(We dont use this, least secured) XX
+2. Open NFS port for Entire vpc 	: 172.31.0.0/16	(good, but problem is Other resources from same VPC can access EFS data)
+3. Open NFS port for Instance IPs	: 172.31.100.5/32 & 172.31.100.6/32 (Good, Secured.. But What if we launch a new instance later, We need to edit this SG and need to add entry)
+
+4. Open NFS port on EFS SG to EC2 Instance SG : More secured, I have to make sure newly launched instance are using same SG as existing instances. **** (Explain same in Interviews)
 
 
+EFS Standard : Designed for frequently accessed data.
+EFS Infrequent Access (IA) : Designed for less frequently accessed data.
+
+If you dont access a file for 90 days, you can move it to IA automatically, 
 
 
+Pre-Req: Create a security group for EFS.
 
 
+cd /mnt
+sudo mkdir efs1a
+
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-0270d9022bae2d57d.efs.ap-south-1.amazonaws.com:/ /mnt/efs1a
 
 
+cd /mnt
+sudo mkdir efs1a
+
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-0270d9022bae2d57d.efs.ap-south-1.amazonaws.com:/ /mnt/efs1b
+
+----------
+
+Making 1a and 1b instances as web servers.. and using EFS as central DocumentRoot Path for httpd.
+
+sudo dnf install httpd -y
+sudo systemctl enable httpd --now
+
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-0270d9022bae2d57d.efs.ap-south-1.amazonaws.com:/ /var/www/html/
+
+=================
+
+IMDS : Instance Metadata Service : 
+
+Metadata : Data about the data.. We can use this option to get the inforamtion about the running ec2 instance.. 
+
+we have 2 options..
+
+v1 : We can access metadata using metadata url (Less secured : SSRF (Server side request forgery))
+v2 : It need a temp token to access metadata. ** More Secured
+
+v1: http://169.254.169.254/latest/meta-data/
 
 
+curl http://169.254.169.254/latest/meta-data/public-ipv4
+
+ami-id
+ami-launch-index
+ami-manifest-path
+block-device-mapping/
+events/
+hostname
+identity-credentials/
+instance-action
+instance-id
+instance-life-cycle
+instance-type
+local-hostname
+local-ipv4
+mac
+metrics/
+network/
+placement/
+profile
+public-hostname
+public-ipv4
+public-keys/
+reservation-id
+security-groups
+services/
+system
+tag-sets
+
+--
+
+How to enforce to use IMDS v2.??
+
+Generate the token and set as env varibale / pass along with the cli command.
+
+curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"
+
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
 
-
-
+curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/ami-id
 
 
 
