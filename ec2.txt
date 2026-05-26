@@ -330,6 +330,58 @@ TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-meta
 curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/ami-id
 
 
+=====================
+
+D: 26/05/2026
+
+kubernetes : k8s
+Observability : 011y
+
+Monitoring : Just monitors the resources, it alerts. Fre
+Observability : SREs : Looking into the logs, identifying the issue, verifying the traces and alerting.. 
+
+With Default cloudwatch metrics, We can monitor only "CPU, Network in/out, Disk Read/write and Status check".
+
+Limitations on Default CW: 
+--> We cannot track memory utilisation, Disk usage %, Get logs from OS to aws console.
+
+==> To overcome the limitations, we need to install cloudwatch agent inside the ec2 instance.. 
+
+CW has 2 types of monitorings:
+1. Basic Monitoring : Graphs updates only for every "5-minutes" interval. Free
+2. Detailed Monitoring : Grpahs updates for every "1 minute" interval. You dont get any addl graphs. Cost us.. 
+
+---
+
+How will you monitor Memory usage or Free disk storage on ec2.
+
+Ans: Install cloudwatch agent, then configue it.
+
+sudo dnf install amazon-cloudwatch-agent -y
+sudo systemctl status amazon-cloudwatch-agent
+
+We need to run the wizard to configure the cw agent..
+
+
+Navigate to IAM
+
+Click on "Roles" --> create a "role" --> use case "ec2" --> search for "CloudWatchAgentServerPolicy" select --> give a name (cw-agent-awar09) and create.. 
+
+New instances: 
+Launch a new instance and Expand "Advanced details" --> look for "Instance profile" --> attach the role (cw-agent-awar09), then launch the instance. 
+
+
+Existing Instance: Choose the ec2 instance --> Navigate to "security" --> Modify IAM role --> search (cw-agent-awar09) and add the role here.
+
+---
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
+
+
+
+
+
+
 
 
 

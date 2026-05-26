@@ -1,0 +1,47 @@
+
+attach iam role with : CloudWatchAgentServerPolicy
+systemctl status amazon-cloudwatch-agent.service
+
+Then, I checked the config.json file in the 
+
+/opt/aws/amazon-cloudwatch-agent/bin/config.json
+
+If the file is not found, we need to create it manually.
+
+vi config.json
+
+{
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/httpd/access_log",
+            "log_group_name": "httpd_logs",
+            "log_stream_name": "{instance_id}-access",
+            "timestamp_format": "%d/%b/%Y:%H:%M:%S %z"
+          },
+          {
+            "file_path": "/var/log/httpd/error_log",
+            "log_group_name": "httpd_logs",
+            "log_stream_name": "{instance_id}-error",
+            "timestamp_format": "%d/%b/%Y:%H:%M:%S %z"
+          }
+        ]
+      }
+    }
+  }
+}
+
+Fetch & Apply the config: **** 
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+-a fetch-config \
+-m ec2 \
+-c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json \
+-s
+
+
+sudo systemctl restart amazon-cloudwatch-agent
+sudo systemctl status amazon-cloudwatch-agent
+

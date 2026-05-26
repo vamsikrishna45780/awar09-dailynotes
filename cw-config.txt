@@ -1,0 +1,45 @@
+{
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/httpd/access_log",
+            "log_group_name": "httpd_logs",
+            "log_stream_name": "{instance_id}-access",
+            "timestamp_format": "%d/%b/%Y:%H:%M:%S %z"
+          },
+          {
+            "file_path": "/var/log/httpd/error_log",
+            "log_group_name": "httpd_logs",
+            "log_stream_name": "{instance_id}-error",
+            "timestamp_format": "%d/%b/%Y:%H:%M:%S %z"
+          }
+        ]
+      }
+    }
+  },
+  "metrics": {
+    "namespace": "CWAgent",
+    "append_dimensions": {
+      "InstanceId": "${aws:InstanceId}"
+    },
+    "metrics_collected": {
+      "mem": {
+        "measurement": [
+          {
+            "name": "mem_used_percent",
+            "rename": "MemoryUsedPercent",
+            "unit": "Percent"
+          },
+          {
+            "name": "mem_total",
+            "rename": "TotalMemory",
+            "unit": "Bytes"
+          }
+        ],
+        "metrics_collection_interval": 60
+      }
+    }
+  }
+}

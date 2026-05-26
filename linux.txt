@@ -903,6 +903,7 @@ sudo growpart /dev/nvme0n1 1
 
 ** In EBS, We dont have option to decrease the volume size. 
 
+==============
 
 
 
