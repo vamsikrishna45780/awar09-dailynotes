@@ -2,13 +2,13 @@
 attach iam role with : CloudWatchAgentServerPolicy
 systemctl status amazon-cloudwatch-agent.service
 
-Then, I checked the config.json file in the 
+Then, check the config.json file in the 
 
 /opt/aws/amazon-cloudwatch-agent/bin/config.json
 
 If the file is not found, we need to create it manually.
 
-vi config.json
+vim config.json
 
 {
   "logs": {
@@ -44,4 +44,15 @@ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
 
 sudo systemctl restart amazon-cloudwatch-agent
 sudo systemctl status amazon-cloudwatch-agent
+
+
+
+----
+
+request from specific ip: 
+[ip = 157.50.133.59, ident, user, timestamp, request, status_code, size, referrer, agent]
+
+detect error 404: 
+[ip, ident, user, timestamp, request, status_code = 404, size, referrer, agent]
+
 

@@ -378,6 +378,72 @@ Existing Instance: Choose the ec2 instance --> Navigate to "security" --> Modify
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
 
 
+===============
+
+D: 27/05/2026
+
+HTTP Status codes : 
+
+2XX 	: OK/Success
+3XX		: Redirection
+4XX		: Client Side Error
+5XX		: Server Side Error
+
+
+
+Count all Requests: [ip, ident, user, timestamp, request, status_code, size, referrer, agent]
+
+Detect 404 errors : [ip, ident, user, timestamp, request, status_code = 404, size, referrer, agent]
+
+Detect 5** errors : [ip, ident, user, timestamp, request, status_code = 5*, size, referrer, agent]
+
+Setect req from specific IP : [ip = 157.50.134.17, ident, user, timestamp, request, status_code, size, referrer, agent]
+
+
+---
+
+Userdata : ec2 userdata is a a bootstrap mechanism used to automatacally executes scripts or commands during instance launch.
+
+--> Usedata runs only on first boot (default)
+--> script runs with root previlages
+
+/var/log/cloud-init.log
+/var/log/cloud-init-output.log
+
+cloud-init status
+
+
+#!/bin/bash
+dnf install httpd -y
+systemctl start httpd
+systemctl enable httpd
+echo "<h1> THis is a Userdata webpage </h1>" > /var/www/html/index.html
+
+
+We can query instance metadata url to see the passed userdata..
+curl http://169.254.169.254/latest/user-data/
+
+==================
+
+
+Cluster Placement Group : Multiple instances share/uses same server rack & network, Power connectivity.. 
+--> All instance get "ultra low latency" and "High network throughput".  
+
+Partition Placement group : We can create multiple partitions, group of instances in partition share same power, network connectivity.. 
+
+Spread Placement Group : Every individual instance runs on its own power, network connectivity.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
