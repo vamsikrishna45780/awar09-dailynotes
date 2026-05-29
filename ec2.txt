@@ -389,8 +389,6 @@ HTTP Status codes :
 4XX		: Client Side Error
 5XX		: Server Side Error
 
-
-
 Count all Requests: [ip, ident, user, timestamp, request, status_code, size, referrer, agent]
 
 Detect 404 errors : [ip, ident, user, timestamp, request, status_code = 404, size, referrer, agent]
@@ -399,10 +397,12 @@ Detect 5** errors : [ip, ident, user, timestamp, request, status_code = 5*, size
 
 Setect req from specific IP : [ip = 157.50.134.17, ident, user, timestamp, request, status_code, size, referrer, agent]
 
+---
+Cloudwatch Dashboard : Centralised location to add multiple resources monitoring graphs. We can add cross region resources as well.
 
 ---
 
-Userdata : ec2 userdata is a a bootstrap mechanism used to automatacally executes scripts or commands during instance launch.
+Userdata : ec2 userdata is a bootstrap mechanism used to automatacally executes scripts or commands during instance launch.
 
 --> Usedata runs only on first boot (default)
 --> script runs with root previlages
@@ -425,13 +425,111 @@ curl http://169.254.169.254/latest/user-data/
 
 ==================
 
-
 Cluster Placement Group : Multiple instances share/uses same server rack & network, Power connectivity.. 
 --> All instance get "ultra low latency" and "High network throughput".  
 
 Partition Placement group : We can create multiple partitions, group of instances in partition share same power, network connectivity.. 
 
 Spread Placement Group : Every individual instance runs on its own power, network connectivity.
+
+==================
+
+D: 29/05/2026
+
+AWS Management console access : Username, Password, Sign-In URL
+AWS programatic Access : 
+
+Pre-Req: Install the AWS CLI Tools : https://aws.amazon.com/cli
+
+Verify : aws --version
+
+Configure the AWS CLI : Choose an IAM user and generate Programatic Credentails (AWSAccessKeyID and SecretACcesKey)
+
+
+aws s3 ls			(S3 global service, doesn;t required region selection)
+aws ec2 describe-instances		(From which region its going to list the instances.?)
+
+aws ec2 describe-instances --region ca-central-1		(canada region)
+
+Output: json / table / text
+
+--
+
+TO verify which cli user we have configured: 
+
+aws sts get-caller-identity
+
+---
+
+aws <service-name> <command> <arguments>
+
+aws iam list-users --debug --output table 
+aws ec2 describe-instances --region ap-south-1
+
+---
+
+TO identify the potential command issues, Pass "--debug" argument
+
+aws s3 ls --debug
+
+---
+
+aws configure --profile dev
+AccesskeyID
+SectetAccessKey
+Region
+Output
+
+aws configure --profile uat
+AccesskeyID
+SectetAccessKey
+Region
+Output
+
+
+aws s3 ls --profile dev			--> Lists the s3 buckets from dev aws account
+
+aws s3 ls --profile uat			--> Lists the s3 buckets from ust aws account
+
+----
+
+**Problem with this option : Our Credentials (AccesskeyID and SecretAccessKey) Stores in Plain text format. 
+
+c:/users/<username>/.aws/ credentails & config
+cd ~  /.aws/credentails & config (enable hidden files)
+
+========
+
+AWS LOGIN : New and AWS Recommended method to access aws environment programatically.
+
+Attach a policy to an IAM user who need to use this "aws login" option. 
+
+--> Session valid for 12 hours
+--> temp token valid for 15 min
+
+Policy Name : "signinlocaldevelopementaccess"
+
+AWS login is bit secures compares to storing longterm "accesskey and secrtet accesskeys"
+AWS login stores the temp token at "~/.aws/login/cache/" see files in .json format.
+
+---
+
+-- If you want to use this "aws login" with OS that dont have a browser feature, use --remote argument
+
+aws login --remote
+
+aws login --profile dev
+aws login --profile uat
+
+==========
+
+Cloudshell : Its an linux based terminal to interact with aws resources using users credentials. 
+A browser-based shell with AWS CLI access from the AWS Management Console
+
+===========
+
+AWS Instance Profile (or) IAM Role : Without storing any credentials in our ec2 instance, we can access other aws resources securely, using IAM Roles. 
+
 
 
 
