@@ -530,6 +530,76 @@ A browser-based shell with AWS CLI access from the AWS Management Console
 
 AWS Instance Profile (or) IAM Role : Without storing any credentials in our ec2 instance, we can access other aws resources securely, using IAM Roles. 
 
+Navigate to IAM , Create role, choose the usecase (ec2) --> Attach policy to the role (S3FullAccess) --> Provide a valid name and attach to instance while launching / after launching. 
+
+
+==============
+
+D: 01/06/2026
+
+Assume IAM Role: 
+Organisations allow users to assume IAM roles instead of assigning direct permissions to enforce the principle of least privilege through temporary security credentials. Direct permissions rely on long-term keys that pose a major risk if leaked, whereas assumed roles use short-term tokens that automatically expire within hours. This practice also eliminates duplicate user accounts, simplifies multi-account management, tracks user activity more accurately in audit logs, and allows seamless integration with external single sign-on (SSO) systems.
+
+-----
+
+Eventbridge : 
+
+Its a serverless event bus. 
+
+--> it has 2 primary usecases. 
+
+1. Event Driven processes : It reacts to specific events.  (Whenever ec2 instance stopped --> send notification.. Someone opened port 22 for 0.0.0.0/0 at SG --> send notification)
+
+2. Scheduled Processes : Run tasks at specific times. () 
+Team working only on IST hours --> Run servers from 09:00 AM (start) to 09:00 PM (stop) - Mon-fri
+Batch job
+
+
+"Cloudtrail" service logs every single event happening on our environment. Its logs everything (including refreshes on pages)
+
+Example 1 : EC2 Instance state change notification:
+
+Event Pattern: 
+{
+  "source": ["aws.ec2"],
+  "detail-type": ["EC2 Instance State-change Notification"],
+  "detail": {
+    "state": ["stopped", "terminated"],
+    "instance-id": ["i-0f8be0d9018bd0561"]
+  }
+}
+
+-- INPUT PATH
+
+{
+  "account": "$.account",
+  "instance-id": "$.detail.instance-id",
+  "region": "$.region",
+  "state": "$.detail.state",
+  "time": "$.time"
+}
+
+--- Input template
+"At <time>, Status of my ec2 instance <instance-id> changed to <state> in <region> region. ACT FAST"
+
+===================
+
+Example : 
+
+** Create a CLoudtrail in N.Virginia region as IAM is a global service. all GLobal servcies logs stores in N.Virginia. 
+
+
+-- Event pattern
+
+{
+  "source": ["aws.iam"],
+  "detail-type": ["AWS API Call via CloudTrail"],
+  "detail": {
+    "eventSource": ["iam.amazonaws.com"],
+    "eventName": ["CreateUser", "DeleteUser"]
+  }
+}
+
 
 
 

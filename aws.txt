@@ -220,7 +220,7 @@ Implicit : user can access only services he is allowed to use using "IAM Policy"
 
 How to track an IAM user activity.?
 
-We can use "cloudtrail" and we can identify user activities, using "username" / "event name".. 
+We can use "Cloudtrail" and we can identify user activities, using "username" / "event name".. 
 
 Cloudtrail is enabled on all aws accounts, by default. It can store last 90 days activities. 
 --> We cannot modify/alter/delete any log we have in cloudtrail.
