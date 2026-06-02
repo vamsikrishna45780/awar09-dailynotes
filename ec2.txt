@@ -601,21 +601,63 @@ Example :
 }
 
 
+---
+
+Scenario : Whenever any user openes port 22, 3389 open for everyone, we should receive an email notification.
+
+==================
+
+D: 02/06/2026
+
+Systems Manager / SSM : Its managed service from AWS to automate the infra level activities.
+
+--> Session Manager : We can ssh into instances without port 22 or SSH Key.
+
+--> Fleet manager : Without connecting to instance, we can see processes, users and manage it. For windows, we can even connect with GUI.
+
+--> Run Command : Execute commands remotely on one / 100s of the instances simultaneously.
+
+--> Parameter Store : Store configuration valkues, passwords, API Keys and environment variblaes. 
+*Limitation with Parameter Store: We cannt automatically rotate the credentials. We need to edit the parameter manually.
+
+--> Patch Manager : Automate OS patching across servers. 
+
+Every ec2 instance will have an SSM agent. TO interact with that ssm agent, we need to add appropriate IAM role to the instance. 
+
+--> Just for connectivity : You can add "AmazonSSMManagedInstanceCore" 
+
+Interview : Can we connect to an ec2 instance without opening port 22 at SG level. Ans: yes, using SSM Connect option. (pre-req: IAM role with valid policy)
 
 
+#!/bin/bash
+dnf install httpd -y
+systemctl start httpd
+systemctl enable httpd
+echo "<h1> THis webpage is created and delivered using SSM </h1>" > /var/www/html/index.html
+
+aws ssm get-parameter --name /dev/mysql/password
+
+=========
+
+What if we loss a Keypair, that attached to ec2 instance.?
+
+Windows : Use SSM Run Command - Run "AWSSupport-RunEC2RescueForWindowsTool" --> It stores the updated password in Parameter.
+
+Linux : 
+1. Depends on Systems Manager/Fleet manager, create a new user, edit required config using run command and login as newly created user without keypair.
+2. Create a GoldenAMi, launch a new instance from GAMI and while launching attach a new keypair.
 
 
+===============
 
+Status checks on ec2 instances : 
 
+1. Instance Status Check : Whenever we start an ec2 insatnce, it checks for OS level issues, It fails aws identify any os level issues.  (a reboot / Observe the logs for boot issues / connect using ec2 serial console for n/w boot issues).. 
+--> We have instance "root volume replacement" task to replace an ec2 instance entire root volume from a snapshot. 
 
+2. System Status Check : Underlying hardware issue.. Stop and start the ec2 instance (AWS Scans for underlying hardware issues, if it detects, It moves the instance to another healthy host).. Raise an incident with AWS for assistance.. 
 
-
-
-
-
-
-
-
+3. EBS status check : Attached ebs volumes health status and connectivity issues to ec2 instance.. 
 
 
 
