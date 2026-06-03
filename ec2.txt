@@ -660,6 +660,65 @@ Status checks on ec2 instances :
 3. EBS status check : Attached ebs volumes health status and connectivity issues to ec2 instance.. 
 
 
+=================
+
+D: 03/06/2026
+
+
+2 cpu, 4 GB RAM --> upgrade it 8 CPU, 16 GB RAM --> Vertical Scaling
+--> vertical scaling required you to stop the ec2 instance.
+** Problem With Vertical Scaling : OS/HW/AZ Failure takes our app down
+
+----
+
+EIP / Elastic IP : A dedicated / fixed IP address we can allocate to our ec2 instance. If we perform stop/start/restart operation, this IP won't change.
+(Associated / unassociated - You get charged - 3.5 USD / Month)
+
+
+ALB : Application Load Balancer Supports "http" & "https" protocols only.
+NLB : Network Load Balancer Supports "TCP, TLS" & "UDP" protocols only.
+
+
+Target group supports multiple Target Types : 
+
+Instances:  Supports load balancing to instances in a VPC. Integrate with Auto Scaling Groups or ECS services for automatic management.
+
+IP addresses: Supports load balancing to VPC and on-premises resources. Facilitates routing to IP addresses and network interfaces on the same instance. Supports IPv6 targets.
+
+---
+Pre-req: 
+
+Create a SG for ELB
+Adjust the WebServers SG to deliver content to ELB-SG
+Create a Target group and add required targets
+
+Create ALB: 
+
+--> Select Atleast 2 AZs
+--> To deliver output over internet, use "internet facing LB", Internal servers the request within VPC.
+--> Choose the TG we created as pre-req. 
+--> We get a DNS Name for LB. We can run "nslookup" to get ALB IPs. 
+
+IF Instance status is showing unhealthy, 
+1. Verify the application status running inside ec2 instance. 
+2. Verify ec2 instance security group. Required port should be reachable to ELB.
+3. Verify Healthcheck path 
+
+
+http satus code : 
+
+2XX : ok/success
+3XX : redirection
+4XX : Client Side
+5XX : Server Side
+
+
+
+
+
+
+
+
 
 
 
