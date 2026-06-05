@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Pricing Calculator - Mumbai Region</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>AWS Pricing Calculator</h1>
+    <p>Mumbai Region (ap-south-1)</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>EC2</h2>
+
+        <label>Instance Type</label>
+        <select id="instanceType">
+            <option value="0.0124">t2.micro</option>
+            <option value="0.0134">t3.micro</option>
+            <option value="0.0268">t3.small</option>
+            <option value="0.0536">t3.medium</option>
+            <option value="0.1072">t3.large</option>
+        </select>
+
+        <label>Number of Instances</label>
+        <input type="number" id="instanceCount" value="1">
+
+        <label>Hours per Month</label>
+        <input type="number" id="instanceHours" value="730">
+    </div>
+
+    <div class="card">
+        <h2>EBS</h2>
+
+        <label>Storage (GB)</label>
+        <input type="number" id="ebsStorage" value="20">
+    </div>
+
+    <div class="card">
+        <h2>S3 Standard</h2>
+
+        <label>Storage (GB)</label>
+        <input type="number" id="s3Storage" value="50">
+    </div>
+
+    <div class="card">
+        <h2>RDS</h2>
+
+        <label>DB Instance</label>
+        <select id="rdsType">
+            <option value="0.021">db.t3.micro</option>
+            <option value="0.042">db.t3.small</option>
+            <option value="0.084">db.t3.medium</option>
+        </select>
+
+        <label>Hours per Month</label>
+        <input type="number" id="rdsHours" value="730">
+    </div>
+
+    <button onclick="calculateCost()">
+        Calculate Cost
+    </button>
+
+    <button onclick="resetCalculator()">
+        Reset
+    </button>
+
+    <div class="results">
+        <h2>Estimated Monthly Cost</h2>
+
+        <div class="summary">
+            <p>EC2: $<span id="ec2Cost">0</span></p>
+            <p>EBS: $<span id="ebsCost">0</span></p>
+            <p>S3: $<span id="s3Cost">0</span></p>
+            <p>RDS: $<span id="rdsCost">0</span></p>
+
+            <hr>
+
+            <h3>Total Monthly: $<span id="totalCost">0</span></h3>
+            <h3>Total Monthly: ₹<span id="totalINR">0</span></h3>
+
+            <h3>Yearly Cost: $<span id="yearlyCost">0</span></h3>
+        </div>
+    </div>
+
+    <div class="chart-box">
+        <canvas id="costChart"></canvas>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
