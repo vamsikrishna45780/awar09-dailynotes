@@ -1,0 +1,49 @@
+
+
+Route53 : AWS DNS Service.. 
+
+HostedZone : 
+--> Public HostedZone : Works over the internet.. 
+--> Private HostedZone : Name resolves only within the AWS Network (Within VPC)
+
+You need to purchase a Domain Name : 
+
+
+Doamin Regisrer : We can purchase domains from here. 
+AWS, GoDadddy, Google DNS service, Bigrock, namechap, hostinger
+
+
+A : Address Record : 
+AAAA :Address record for IPv6
+CNAME : Cananical Name : 
+PTR : Pointer record
+
+
+
+
+Pre-req: 
+
+Create 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

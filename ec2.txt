@@ -789,7 +789,46 @@ Create ASG, Use Step 6 Launch template and Step 7 Load Balancer.
 
 b2b application : Business to business application : Almost all the time, load is predictable.. 
 
+
+===============
+
+D: 08/06/2026
+
+
+Tenancy : 
+
+Shared tenancy : underlying hardware share with multiple customers. Less cost.
+
+Dedicated has 2 options:
+1. Dedicated Instance : You get a ine individual instance (small hardware aws preapres and runs your instance)
+2. Dedicated Host : We can run multiple instances on a host, We do have option to apply licenses at underlying instance sockets/hardware.
+
+----
+
+Along with EBS volumes, We have Instance store volumes.. 
+
+"Instance store volumes" also called as "Ephemeral Storages".
+Due to any technical issue, If instance stopped / started, We will loss all the data. 
+
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

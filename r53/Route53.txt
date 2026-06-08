@@ -1,0 +1,120 @@
+
+
+
+AWS DNS Servcie
+
+DNS = Domain Naming System / Service..
+
+Route53 = AWS DNS Service
+
+A Record : Address Record : IP <--> Name (ipv4)
+AAAA Record : Address Record : IP <--> Name (ipv6)
+CNAME : Cananical Name : Another Name
+TXT :  Simple Text Record : 
+MX : Mail Serer Records..
+
+Alias : THis helps us to pick the aws appropriote resources automatically.
+
+
+
+
+
+We cannot delete these records..
+NS : Name Server Record (THis helps to map AWS and Domain Registrer)
+SOA : Start of Authority Record : 
+
+DomainRegistrer : Godaddy, Bigrock, namecheaap, aws route53, hostinger
+ICANN : Domain uniqueness
+IANA root zonedb
+
+
+
+Step 1 : Purchase a Domain name 
+
+Step 2 : Create a HostedZone in R53 (Public)
+
+Step 3 : Grab the NS records from HostedZOne and configure it at Doamin Registrer
+
+ns-1959.awsdns-52.co.uk
+ns-154.awsdns-19.com
+ns-667.awsdns-19.net
+ns-1183.awsdns-19.org
+
+ipconfig /flushdns
+
+---
+
+
+simple Routing policy : No complex logics, very simple.. 
+
+
+
+
+---
+
+AWS Route53 DNS has 2 types of resolvers, when we have hybrid-environments...
+
+Inbound DNS Resolver : On-Prem to AWS : 
+--> Allow on-premise systems to resolve private records inside the AWS VPC.
+
+Flow: On-prem server trying to access AWS DB with DNS name..
+
+On-Prem DNS server receives the query --> Forwards to Route53 "Inbound Endpoint" --> Route53 Hosted Zone --> verify the record --> Reach the Db server --> gets the response by On-prem server..
+
+---
+
+Onbound DNS Resolver : AWS --> On-Prem : 
+
+Flow: AWS Server trying to access on-prem hosted DB with DNS name..
+
+AWS Ec2 instance trying to access --> DNS HostedZone Resolver rule --> Forwards the traffic to "outbound endpoint" --> Req sends to on-rem DNS server --> reach the on-prem DB server...
+
+----
+
+
+http : HyperText Transfer Protocol : 
+Port : 80 
+Data is sent in Plain text
+No Encryption
+No Identity verification
+MITM : Man In The Middle Attach : If someone intercepts the traffic they can read, Passwords, API Token, Form data, Credit Card.. 
+
+
+
+https : Secure Over HTTP :
+HTTP Over TLS (Transport Layer Security) 
+Default Port: 443
+Data Is encrypted
+Server Identity Verified
+Data Integrity verified
+
+HTTPS uses: Symetric encryption, Digital Certificate, TLS handshake
+
+
+==========
+
+ACM : Amazon Certificate Manager
+
+We need to prove our ownership on the domain we are questing for SSL/TLS certificate.
+
+
+
+
+#!/bin/bash
+dnf install httpd -y
+systemctl enable httpd
+systemctl start httpd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
