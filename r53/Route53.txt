@@ -1,112 +1,66 @@
 
 
+Route53 : AWS DNS Service.. 
 
-AWS DNS Servcie
+HostedZone : 
+--> Public HostedZone : Works over the internet.. 
+--> Private HostedZone : Name resolves only within the AWS Network (Within VPC)
 
-DNS = Domain Naming System / Service..
-
-Route53 = AWS DNS Service
-
-A Record : Address Record : IP <--> Name (ipv4)
-AAAA Record : Address Record : IP <--> Name (ipv6)
-CNAME : Cananical Name : Another Name
-TXT :  Simple Text Record : 
-MX : Mail Serer Records..
-
-Alias : THis helps us to pick the aws appropriote resources automatically.
+You need to purchase a Domain Name : 
 
 
+Doamin Regisrer : We can purchase domains from here. 
+AWS, GoDadddy, Google DNS service, Bigrock, namechap, hostinger
 
 
-
-We cannot delete these records..
-NS : Name Server Record (THis helps to map AWS and Domain Registrer)
-SOA : Start of Authority Record : 
-
-DomainRegistrer : Godaddy, Bigrock, namecheaap, aws route53, hostinger
-ICANN : Domain uniqueness
-IANA root zonedb
+A : Address Record : 
+AAAA :Address record for IPv6
+CNAME : Cananical Name : 
+PTR : Pointer record
 
 
 
-Step 1 : Purchase a Domain name 
+============================
 
-Step 2 : Create a HostedZone in R53 (Public)
-
-Step 3 : Grab the NS records from HostedZOne and configure it at Doamin Registrer
-
-ns-1959.awsdns-52.co.uk
-ns-154.awsdns-19.com
-ns-667.awsdns-19.net
-ns-1183.awsdns-19.org
-
-ipconfig /flushdns
-
----
+D: 09/06/2026
 
 
-simple Routing policy : No complex logics, very simple.. 
+Pre-Preq: 
+Launch an ec2 instance in "ap-south-1" region, Will add a Load Balancer on top of the ec2 instance.
+
+Launch an ec2 instance in "us-east-1" region, Will add a Load Balancer on top of the ec2 instance.
 
 
-
-
----
-
-AWS Route53 DNS has 2 types of resolvers, when we have hybrid-environments...
-
-Inbound DNS Resolver : On-Prem to AWS : 
---> Allow on-premise systems to resolve private records inside the AWS VPC.
-
-Flow: On-prem server trying to access AWS DB with DNS name..
-
-On-Prem DNS server receives the query --> Forwards to Route53 "Inbound Endpoint" --> Route53 Hosted Zone --> verify the record --> Reach the Db server --> gets the response by On-prem server..
-
----
-
-Onbound DNS Resolver : AWS --> On-Prem : 
-
-Flow: AWS Server trying to access on-prem hosted DB with DNS name..
-
-AWS Ec2 instance trying to access --> DNS HostedZone Resolver rule --> Forwards the traffic to "outbound endpoint" --> Req sends to on-rem DNS server --> reach the on-prem DB server...
-
-----
-
-
-http : HyperText Transfer Protocol : 
-Port : 80 
-Data is sent in Plain text
-No Encryption
-No Identity verification
-MITM : Man In The Middle Attach : If someone intercepts the traffic they can read, Passwords, API Token, Form data, Credit Card.. 
-
-
-
-https : Secure Over HTTP :
-HTTP Over TLS (Transport Layer Security) 
-Default Port: 443
-Data Is encrypted
-Server Identity Verified
-Data Integrity verified
-
-HTTPS uses: Symetric encryption, Digital Certificate, TLS handshake
-
-
-==========
-
-ACM : Amazon Certificate Manager
-
-We need to prove our ownership on the domain we are questing for SSL/TLS certificate.
-
+Simple Routing Policy : 
+end-user req <--> Route53 <--> LoadBalancer <--> EC2
 
 
 
 #!/bin/bash
-dnf install httpd -y
-systemctl enable httpd
-systemctl start httpd
+sudo dnf install httpd -y
+sudo systemctl enable httpd --now
+
+--> Ive configured google DNS servers, this resolves bit quickly comapred to your IST DNS servers.
+8.8.8.8 and 8.8.4.4
+
+ipconfig /flushdns
 
 
+=======================
 
+AWS Route53 has 2 types of resolvers, if our organisation is using hybrid-environment.. 
+Hybrid : some servers in AWS and Some servers in on-premises.. (site-to-site vpn / aws direct connect)
+
+Inbound DNS resolver : On-Prem to AWS
+--> Allows on-premise servers to resolve private records inside the aws vpc..
+
+Flow : on-prem server trying to access aws DB with DNS name.. On-Premise DNS server received the query --> it forwards the query to route53 "Inbound endpoint" --> Send to Route53 HostedZOne --> Verify the record --> Reach the DB Server --> Provides the response to on-premise server..
+
+-----
+
+Outbound DNS resolver : AWS to on-premise
+
+Flow : AWS ec2 instance typoing to access on-prem hosted db.. Request goes to hostedzone "outbound resolver rule" --> Request send to on-premise DNS server --> Then On-Prem DNS server looks for the record mapping --> Sends the req to on-prem db server.. 
 
 
 
